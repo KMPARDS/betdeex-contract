@@ -1,4 +1,5 @@
-pragma solidity ^0.6.6;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.7.0;
 import './safemath.sol';
 import './betdeex.sol';
 import './ERC173.sol';
@@ -113,7 +114,7 @@ contract Bet is betInterface{
     /// @param _choice should be 0, 1, 2; no => 0, yes => 1, draw => 2
     /// @param _betTokensInExaEs is amount of bet
     function enterBet(uint8 _choice, uint256 _betTokensInExaEs) public onlyKYC payable{
-        require(now < pauseTimestamp, "Cannot enter after pause time");
+        require(block.timestamp < pauseTimestamp, "Cannot enter after pause time");
         require(_betTokensInExaEs >= minimumBetInExaEs, "Betting tokens should be more than minimum");
 
         /// @dev betDeEx contract transfers the tokens to it self
@@ -154,12 +155,12 @@ contract Bet is betInterface{
         }
 
         endedBy = msg.sender;
-        endTimestamp = now;
+        endTimestamp = block.timestamp;
 
         /// @dev the platform fee is excluded from entire bet balance and this is the amount to be distributed
         totalPrize = totalContractBalance().mul(prizePercentPerThousand).div(1000);
 
-        /// @dev this is the left platform fee according to the totalPrize variable above
+        // @dev this is the left platform fee according to the totalPrize variable above
         uint256 _platformFee = totalContractBalance().sub(totalPrize);
 
         /// @dev sending plaftrom fee to the super manager
@@ -190,7 +191,7 @@ contract Bet is betInterface{
         require(endTimestamp > 0, "Cannot withdraw before end time");
         require(!bettorHasClaimed[msg.sender], "Cannot claim again");
         require(_bettorAddress == msg.sender, "Only the bettor can claim his winnings");
-        require(bettorBetAmountInExaEsByChoice[msg.sender][finalResult] >= minimumBetInExaEs, "Caller should have a betting"); /// @dev to keep out option 0
+        require(bettorBetAmountInExaEsByChoice[msg.sender][finalResult] >= minimumBetInExaEs, "Caller should have a betting"); // @dev to keep out option 0
         uint256 _winningAmount = bettorBetAmountInExaEsByChoice[msg.sender][finalResult].mul(totalPrize).div(totalBetTokensInExaEsByChoice[finalResult]);
         bettorHasClaimed[msg.sender] = true;
         betBalanceInExaEs[msg.sender] = betBalanceInExaEs[msg.sender].sub(_winningAmount);

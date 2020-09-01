@@ -1,4 +1,5 @@
-pragma solidity ^0.6.6;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.7.0;
 
 import './ERC1167.sol'; /// @dev also contains safeMath
 import './ERC173.sol';
@@ -71,7 +72,7 @@ contract BetDeEx is CloneFactory, Ownable, betInterface {
 
     /// @notice Sets up BetDeEx smart contract when deployed
     
-    constructor() public {
+    constructor() {
         _owner = msg.sender;
         
     }

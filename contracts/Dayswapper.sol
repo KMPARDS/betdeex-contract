@@ -1,4 +1,6 @@
-pragma solidity 0.6.6;
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.7.0;
 import './safemath.sol';
 /// Dayswappers Referral Program of Era Swap Ecosystem
 /// @dev you can use Dayswappers smart contract to reward users on your platform
